@@ -27,12 +27,10 @@ class Tennis
     public function playEnd(string $playWinner = ''): string
     {
         if ($playWinner == 'Player1') {
-            return $this->matchPlayPointToName($this->actualState[0]);
+            return $this->matchPlayPointToNameDuringGame($this->actualState[0]);
         }
 
-        if (array_sum($this->actualState) == 0) {
-            return 'Love-Love : 0-0';
-        }
+        return 'Love-Love : 0-0';
     }
 
     /**
@@ -40,10 +38,15 @@ class Tennis
      *
      * @return string
      */
-    private function matchPlayPointToName(int $playPoint): string
+    private function matchPlayPointToNameDuringGame(int $playPoint): string
     {
-        $nameByPlayPoint = [0 => 'Fifteen', 15 => 'Thirty', 30 => 'Forty'];
+        $game = 0;
+        $nameByPlayPoint = [0 => 'Fifteen', 15 => 'Thirty', 30 => 'Forty', 40 => 'Love'];
 
-        return $nameByPlayPoint[$playPoint].'-Love : 0-0';
+        if ($nameByPlayPoint[$playPoint] == 'Love') {
+            $game = 1;
+        }
+
+        return $nameByPlayPoint[$playPoint].'-Love : '.$game.'-0';
     }
 }
