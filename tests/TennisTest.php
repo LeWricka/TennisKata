@@ -57,6 +57,18 @@ final class TennisTest extends TestCase
         $this->assertEquals([0, 0, 1, 0], $playResult);
     }
 
+    /**
+     * @test
+     */
+    public function player2_wins_first_play_state()
+    {
+        $tennis = new Tennis([0, 0, 0, 0]);
+
+        $playResult = $tennis->playEnd('Player2');
+
+        $this->assertEquals([0, 1, 0, 0], $playResult);
+    }
+
 
 //    /**
 //     * @test

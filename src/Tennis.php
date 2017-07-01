@@ -27,16 +27,31 @@ class Tennis
      */
     public function playEnd(string $playWinner = ''): array
     {
-        $plays = $this->actualState[0];
-        $game = $this->actualState[2];
+        $player1State = [$this->actualState[0], $this->actualState[2]];
+        $player2State = [$this->actualState[1], $this->actualState[3]];
         if ($playWinner == 'Player1') {
-            $plays ++;
-            if ($plays == self::NUMBER_OF_PLAYS_FOR_GAME) {
-                $game ++;
-                $plays = 0;
-            }
+            $player1State = $this->calculateStateVariationForPlay($player1State);
+        }
+        if ($playWinner == 'Player2') {
+            $player2State = $this->calculateStateVariationForPlay($player2State);
         }
 
-        return [$plays, 0, $game, 0];
+        return [$player1State[0], $player2State[0], $player1State[1], $player2State[1]];
+    }
+
+    /**
+     * @param array $scoreState
+     *
+     * @return array
+     */
+    private function calculateStateVariationForPlay(array $scoreState): array
+    {
+        $plays = $scoreState[0] + 1;
+        $game = $scoreState[1];
+        if ($plays == self::NUMBER_OF_PLAYS_FOR_GAME) {
+            $game ++;
+            $plays = 0;
+        }
+        return array($plays, $game);
     }
 }
