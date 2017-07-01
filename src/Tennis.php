@@ -4,6 +4,7 @@ namespace Deg540\CleanCodeKata9;
 
 class Tennis
 {
+    const NUMBER_OF_PLAYS_FOR_GAME = 4;
     /**
      * @var array
      */
@@ -26,11 +27,16 @@ class Tennis
      */
     public function playEnd(string $playWinner = ''): array
     {
-        $sum = 0;
+        $plays = $this->actualState[0];
+        $game = $this->actualState[2];
         if ($playWinner == 'Player1') {
-            $sum ++;
+            $plays ++;
+            if ($plays == self::NUMBER_OF_PLAYS_FOR_GAME) {
+                $game ++;
+                $plays = 0;
+            }
         }
 
-        return [$this->actualState[0] + $sum, 0, 0, 0];
+        return [$plays, 0, $game, 0];
     }
 }

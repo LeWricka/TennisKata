@@ -24,7 +24,7 @@ final class TennisTest extends TestCase
     /**
      * @test
      */
-    public function player1_wins_first_play()
+    public function player1_wins_first_play_state()
     {
         $tennis = new Tennis([0, 0, 0, 0]);
 
@@ -36,13 +36,25 @@ final class TennisTest extends TestCase
     /**
      * @test
      */
-    public function player1_wins_second_play()
+    public function player1_wins_second_play_state()
     {
         $tennis = new Tennis([1, 0, 0, 0]);
 
         $playResult = $tennis->playEnd('Player1');
 
         $this->assertEquals([2, 0, 0, 0], $playResult);
+    }
+
+    /**
+     * @test
+     */
+    public function player1_wins_first_game_state()
+    {
+        $tennis = new Tennis([3, 0, 0, 0]);
+
+        $playResult = $tennis->playEnd('Player1');
+
+        $this->assertEquals([0, 0, 1, 0], $playResult);
     }
 
 
