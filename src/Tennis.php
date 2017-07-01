@@ -4,7 +4,14 @@ namespace Deg540\CleanCodeKata9;
 
 class Tennis
 {
+    const PLAYER1_PLAYS = 0;
+    const PLAYER2_PLAYS = 1;
+    const PLAYER1_GAMES = 2;
+    const PLAYER2_GAMES = 3;
     const NUMBER_OF_PLAYS_FOR_GAME = 4;
+    const PLAYER_1 = 'Player1';
+    const PLAYER_2 = 'Player2';
+
     /**
      * @var array
      */
@@ -27,31 +34,72 @@ class Tennis
      */
     public function playEnd(string $playWinner = ''): array
     {
-        $player1State = [$this->actualState[0], $this->actualState[2]];
-        $player2State = [$this->actualState[1], $this->actualState[3]];
-        if ($playWinner == 'Player1') {
-            $player1State = $this->calculateStateVariationForPlay($player1State);
+        if ($playWinner == self::PLAYER_1) {
+            $this->updateState(self::PLAYER1_PLAYS, self::PLAYER1_GAMES);
         }
-        if ($playWinner == 'Player2') {
-            $player2State = $this->calculateStateVariationForPlay($player2State);
+        if ($playWinner == self::PLAYER_2) {
+            $this->updateState(self::PLAYER2_PLAYS, self::PLAYER2_GAMES);
         }
 
-        return [$player1State[0], $player2State[0], $player1State[1], $player2State[1]];
+        return array_values($this->actualState);
     }
 
     /**
-     * @param array $scoreState
-     *
-     * @return array
+     * @return bool
      */
-    private function calculateStateVariationForPlay(array $scoreState): array
+    private function isGameWinner(): bool
     {
-        $plays = $scoreState[0] + 1;
-        $game = $scoreState[1];
-        if ($plays == self::NUMBER_OF_PLAYS_FOR_GAME) {
-            $game ++;
-            $plays = 0;
+        if (($this->isScoreHigherThanGameMax(self::PLAYER1_PLAYS) ||
+                $this->isScoreHigherThanGameMax(self::PLAYER2_PLAYS))
+            && ($this->isPlayDifferenceHigherThanMaxDifference())
+        ) {
+            return true;
         }
-        return array($plays, $game);
+        return false;
+    }
+
+    /**
+     * @param int $winnerPlayerGames
+     */
+    private function cleanStateAfterGameEnd(int $winnerPlayerGames)
+    {
+        $this->actualState[self::PLAYER1_PLAYS] = 0;
+        $this->actualState[self::PLAYER2_PLAYS] = 0;
+        $this->actualState[$winnerPlayerGames] ++;
+    }
+
+    /**
+     * @param int $plays
+     * @param int $games
+     */
+    private function updateState(int $plays, int $games)
+    {
+        $this->actualState[$plays] ++;
+        if ($this->isGameWinner()) {
+            $this->cleanStateAfterGameEnd($games);
+        }
+    }
+
+    /**
+     * @param int $player
+     *
+     * @return bool
+     */
+    private function isScoreHigherThanGameMax(int $player): bool
+    {
+        return $this->actualState[$player] >= self::NUMBER_OF_PLAYS_FOR_GAME;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isPlayDifferenceHigherThanMaxDifference(): bool
+    {
+        $playDifference = $this->actualState[self::PLAYER1_PLAYS] - $this->actualState[self::PLAYER2_PLAYS];
+        if($playDifference > 1 || $playDifference < -1){
+            return true;
+        }
+
+        return false;
     }
 }
