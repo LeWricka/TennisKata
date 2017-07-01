@@ -26,10 +26,11 @@ class Tennis
      */
     public function playEnd(string $playWinner = ''): array
     {
+        $sum = 0;
         if ($playWinner == 'Player1') {
-            return [1, 0, 0, 0];
+            $sum ++;
         }
 
-        return [0, 0, 0, 0];
+        return [$this->actualState[0] + $sum, 0, 0, 0];
     }
 }
