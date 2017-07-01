@@ -20,10 +20,16 @@ class Tennis
     }
 
     /**
+     * @param string $playWinner
+     *
      * @return array
      */
-    public function playEnd(): array
+    public function playEnd(string $playWinner = ''): array
     {
-        return [0,0,0,0];
+        if ($playWinner == 'Player1') {
+            return [1, 0, 0, 0];
+        }
+
+        return [0, 0, 0, 0];
     }
 }
