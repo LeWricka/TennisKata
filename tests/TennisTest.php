@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Deg540\CleanCodeKata9\Test;
 
+use Deg540\CleanCodeKata9\Tennis;
 use PHPUnit\Framework\TestCase;
 
 final class TennisTest extends TestCase
@@ -11,7 +12,13 @@ final class TennisTest extends TestCase
     /**
      * @test
      */
-    public function initial_state_change_for_player1(){}
+    public function initial_state(){
+        $tennis = new Tennis([0,0,0,0]);
+
+        $playResult = $tennis->playEnd();
+
+        $this->assertEquals([0,0,0,0], $playResult);
+    }
 
 
 //    /**
